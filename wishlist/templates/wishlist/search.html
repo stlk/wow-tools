@@ -1,0 +1,6 @@
+{% for item in data %}
+<li class="block px-2 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 cursor-pointer flex items-center" role="option" data-autocomplete-value="{{item.id}}">
+    <img class="mx-2 h-5 w-5 align-middle" src="https://wow.zamimg.com/images/wow/icons/large/{{item.icon}}.jpg">
+    {{item.name}}
+</li>
+{% endfor %}

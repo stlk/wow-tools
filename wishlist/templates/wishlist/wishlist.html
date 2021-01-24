@@ -1,0 +1,101 @@
+{% extends 'wishlist/base.html' %}
+
+<!--
+  This example requires Tailwind CSS v2.0+
+
+  This example requires some changes to your config:
+
+  ```
+  // tailwind.config.js
+  module.exports = {
+    // ...
+    plugins: [
+      // ...
+      require('@tailwindcss/forms'),
+    ]
+  }
+  ```
+-->
+{% block content %}
+<header>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h1 class="text-3xl font-bold leading-tight text-gray-900">
+      Wishlist - {{wishlist.name}}
+    </h1>
+  </div>
+</header>
+<main>
+  <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="bg-white shadow rounded-lg divide-y divide-gray-200 max-w-l my-5">
+      {% if request.user.is_authenticated %}
+      <form method="post" class="px-4 py-5 sm:p-6">
+        {% csrf_token %}
+        <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+          <div class="sm:col-span-4" data-controller="autocomplete" data-autocomplete-url="/api/search">
+            <label for="name" class="block text-sm font-medium text-gray-700">Item</label>
+            <div class="mt-1 relative">
+              <input type="text" name="name" id="name"
+                class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-md"
+                data-autocomplete-target="input">
+                <ul class="origin-top-right absolute left-0 mt-2 w-64 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5" data-autocomplete-target="results"></ul>
+              <input type="hidden" name="item" data-autocomplete-target="hidden" />
+              <p class="mt-2 text-sm text-gray-500" id="email-description">Search for you desired item.</p>
+            </div>
+          </div>
+          <!-- <div class="sm:col-span-4">
+            <label for="item" class="block text-sm font-medium text-gray-700">Item</label>
+            <div class="mt-1">
+              <input type="text" name="item" id="item"
+                class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-md"
+                placeholder="12345">
+            </div>
+          </div> -->
+          <div class="sm:col-span-4">
+            <label for="upgrade_level" class="block text-sm font-medium text-gray-700">Priority</label>
+            <select id="upgrade_level" name="upgrade_level"
+              class="mt-1 block pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+              <option value="major">Major</option>
+              <option value="minor">Minor</option>
+            </select>
+          </div>
+
+          <div class="sm:col-span-4">
+            <button type="submit"
+              class="mt-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              Save
+            </button>
+          </div>
+        </div>
+      </form>
+      {% endif %}
+    </div>
+    <div>
+      <div class="bg-white shadow overflow-hidden sm:rounded-md">
+        <ul class="divide-y divide-gray-200">
+          {% for item in items %}
+          <li>
+            <div class="block hover:bg-gray-50">
+              <div class="px-4 py-4 sm:px-6">
+                <div class="flex items-center justify-between">
+                  <a href="https://classic.wowhead.com/item={{item.item}}"
+                    class="text-sm font-medium text-indigo-600 truncate">
+                    {{item.name}}
+                  </a>
+                  <div class="ml-2 flex-shrink-0 flex">
+                    <p
+                      class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      {{item.upgrade_level}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</main>
+{% endblock %}
